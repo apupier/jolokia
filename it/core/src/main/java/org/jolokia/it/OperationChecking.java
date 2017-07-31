@@ -17,11 +17,14 @@ package org.jolokia.it;
  */
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import javax.management.*;
+import javax.management.MBeanRegistration;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import javax.management.openmbean.TabularData;
 
 /**
@@ -132,6 +135,11 @@ public class OperationChecking implements OperationCheckingMBean,MBeanRegistrati
     public int overloadedMethod(String[] arg) {
         return 3;
     }
+    
+    @Override
+    public Date withDates(Date date) {
+    	return date;
+    }
 
     public ObjectName preRegister(MBeanServer server, ObjectName name) throws Exception {
         return new ObjectName(domain + ":type=operation");
@@ -149,7 +157,7 @@ public class OperationChecking implements OperationCheckingMBean,MBeanRegistrati
 
     public int sleep(int seconds) throws InterruptedException {
         synchronized(this) {
-            this.wait(seconds * 1000);
+            this.wait(seconds * 1000L);
         }
         return seconds;
     }
@@ -160,5 +168,9 @@ public class OperationChecking implements OperationCheckingMBean,MBeanRegistrati
 
     public TimeUnit findTimeUnit(TimeUnit unit) {
         return unit;
+    }
+    
+    public Integer getInteger(int returnedValue) {
+    	return Integer.valueOf(returnedValue);
     }
 }
